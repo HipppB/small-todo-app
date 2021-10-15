@@ -19,7 +19,7 @@ export default function TodoApp() {
   //Toggle task
   const handleToggle = (id) => {
     let mapped = toDoList.map((task) => {
-      return task.id == id
+      return task.id === id
         ? { ...task, complete: !task.complete }
         : { ...task };
     });
@@ -29,7 +29,7 @@ export default function TodoApp() {
   //Delete Task (Data is nether really deleted, only display)
   const handleToggleDelete = (id) => {
     let mapped = toDoList.map((task) => {
-      return task.id == id ? { ...task, deleted: !task.deleted } : { ...task };
+      return task.id === id ? { ...task, deleted: !task.deleted } : { ...task };
     });
     setToDoList(mapped);
   };
@@ -37,7 +37,7 @@ export default function TodoApp() {
   //Handle Change of task Name
   const handleChange = (id, value) => {
     let mapped = toDoList.map((task) => {
-      return task.id == id ? { ...task, task: value } : { ...task };
+      return task.id === id ? { ...task, task: value } : { ...task };
     });
     setToDoList(mapped);
     console.log(toDoList);
@@ -70,8 +70,9 @@ export default function TodoApp() {
         handleChange={handleChange}
         handleToggleDelete={handleToggleDelete}
       />
-      <form onSubmit={(e) => submitNew(e)}>
+      <form className={"FormAddTodo"} onSubmit={(e) => submitNew(e)}>
         <input
+          placeholder="Ajouter un item"
           type="text"
           value={newTaskValue}
           onChange={(e) => setNewTaskValue(e.target.value)}
