@@ -4,11 +4,19 @@ import React, { useState } from "react";
 import TodoList from "./TodoList";
 
 import "./Todo.css";
+//Import Data ms-ust be replaced by API Call in the future
 import data from "./data.json";
 
 export default function TodoApp() {
+  // Loading Data in state
   const [toDoList, setToDoList] = useState(data);
+
+  // Input for new task
   const [newTaskValue, setNewTaskValue] = useState("");
+
+  //Actions on Data
+
+  //Toggle task
   const handleToggle = (id) => {
     let mapped = toDoList.map((task) => {
       return task.id == id
@@ -17,12 +25,16 @@ export default function TodoApp() {
     });
     setToDoList(mapped);
   };
+
+  //Delete Task (Data is nether really deleted, only display)
   const handleToggleDelete = (id) => {
     let mapped = toDoList.map((task) => {
       return task.id == id ? { ...task, deleted: !task.deleted } : { ...task };
     });
     setToDoList(mapped);
   };
+
+  //Handle Change of task Name
   const handleChange = (id, value) => {
     let mapped = toDoList.map((task) => {
       return task.id == id ? { ...task, task: value } : { ...task };
@@ -31,6 +43,7 @@ export default function TodoApp() {
     console.log(toDoList);
   };
 
+  //New task
   const addNewTask = (value) => {
     let newTask = {
       id: toDoList.length + 1,
@@ -41,6 +54,8 @@ export default function TodoApp() {
     let mapped = [...toDoList, newTask];
     setToDoList(mapped);
   };
+
+  //Handle submit of form
   const submitNew = (event) => {
     event.preventDefault();
     addNewTask(newTaskValue);

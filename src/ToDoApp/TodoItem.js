@@ -1,11 +1,10 @@
-import { useState } from "react";
-
 export default function TodoItem({
   item,
   handleToggle,
   handleChange,
   handleToggleDelete,
 }) {
+  //Don't display deleted Items
   if (!item.deleted) {
     return (
       <div>
