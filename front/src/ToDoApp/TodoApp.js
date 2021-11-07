@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 //Components
 import TodoList from "./TodoList";
-
+import getItems from "../data/getItems";
 import "./Todo.css";
-//Import Data ms-ust be replaced by API Call in the future
-import data from "./data.json";
-
+import apirequest from "../data/apirequest";
 export default function TodoApp() {
   // Loading Data in state
-  const [toDoList, setToDoList] = useState(data);
+  const [toDoList, setToDoList] = useState([]);
+  useEffect(() => getItems().then((data) => setToDoList(data)), []);
 
   // Input for new task
   const [newTaskValue, setNewTaskValue] = useState("");
@@ -18,6 +17,11 @@ export default function TodoApp() {
 
   //Toggle task
   const handleToggle = (id) => {
+    const toggledElement = apirequest({
+      link: "/complete/" + id,
+      method: "GET",
+    });
+
     let mapped = toDoList.map((task) => {
       return task.id === id
         ? { ...task, complete: !task.complete }
@@ -28,31 +32,39 @@ export default function TodoApp() {
 
   //Delete Task (Data is nether really deleted, only display)
   const handleToggleDelete = (id) => {
+    const toggledElement = apirequest({
+      link: "/delete/" + id,
+      method: "GET",
+    });
     let mapped = toDoList.map((task) => {
       return task.id === id ? { ...task, deleted: !task.deleted } : { ...task };
     });
     setToDoList(mapped);
   };
 
-  //Handle Change of task Name
+  //Handle Change of task
   const handleChange = (id, value) => {
+    const toggledElement = apirequest({
+      link: "/" + id,
+      method: "PUT",
+      rawData: { task: value },
+    });
     let mapped = toDoList.map((task) => {
       return task.id === id ? { ...task, task: value } : { ...task };
     });
     setToDoList(mapped);
-    console.log(toDoList);
   };
 
   //New task
   const addNewTask = (value) => {
-    let newTask = {
-      id: toDoList.length + 1,
-      task: value,
-      complete: false,
-      deleted: false,
-    };
-    let mapped = [...toDoList, newTask];
-    setToDoList(mapped);
+    const newelement = apirequest({
+      link: "/",
+      method: "POST",
+      rawData: { task: value },
+    }).then((task) => {
+      let mapped = [...toDoList, task];
+      setToDoList(mapped);
+    });
   };
 
   //Handle submit of form
@@ -63,7 +75,7 @@ export default function TodoApp() {
   };
   return (
     <body>
-      <h1>To Do List</h1>
+      <h1>Shopping List</h1>
       <TodoList
         toDoList={toDoList}
         handleToggle={handleToggle}
