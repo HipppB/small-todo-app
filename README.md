@@ -6,4 +6,8 @@ For the moment only the front-end website version is in developement but it may 
 
 # What's done ?
 
-- Main State
+- Works for a single Todo
+
+# What's next ?
+
+- Multiple todo integration
